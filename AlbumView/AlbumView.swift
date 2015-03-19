@@ -9,7 +9,7 @@
 import UIKit
 @IBDesignable
 class AlbumView: UIView,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,AlbumViewDelegate{
-    
+    var indexPath: NSIndexPath!
     var collectionView:UICollectionView!
     let identifier = "Cell"
     required init(coder aDecoder: NSCoder) {
@@ -40,7 +40,10 @@ class AlbumView: UIView,UICollectionViewDataSource,UICollectionViewDelegate,UICo
         collectionView.showsVerticalScrollIndicator = false
         collectionView.registerClass(AlbumViewCell.self, forCellWithReuseIdentifier: identifier)
         self.addSubview(collectionView)
-
+        
+        if(indexPath != nil){
+            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+        }
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         return 20
@@ -57,7 +60,7 @@ class AlbumView: UIView,UICollectionViewDataSource,UICollectionViewDelegate,UICo
         return cell
         
     }
-    func onClick(){
+    func onAlbumItemClick(){
         //点击cell回调
     }
 }
@@ -125,12 +128,12 @@ class AlbumViewCell: UICollectionViewCell ,UIScrollViewDelegate{
     func scrollViewTapped(recognizer: UITapGestureRecognizer) {
         //单击回调
         if(delegate != nil){
-            delegate.onClick()
+            delegate.onAlbumItemClick()
         }
     }
     
 }
 protocol AlbumViewDelegate{
-    func onClick()
+    func onAlbumItemClick()
 }
 
